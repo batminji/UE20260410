@@ -15,6 +15,48 @@ AMyPawn::AMyPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	RootComponent = Box;
+	Box->SetBoxExtent(FVector(45.f, 60.f, 20.f));
+
+	Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
+	Body->SetupAttachment(Box);
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_Body(TEXT("/Script/Engine.StaticMesh'/Game/Assets/P38/SM_P38_Body.SM_P38_Body'"));
+	if(SM_Body.Succeeded())
+	{
+		Body->SetStaticMesh(SM_Body.Object);
+	}
+
+	Left = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Left"));
+	Left->SetupAttachment(Body);
+
+	Right = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Right"));
+	Right->SetupAttachment(Body);
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_Propeller(TEXT("/Script/Engine.StaticMesh'/Game/Assets/P38/SM_P38_Propeller.SM_P38_Propeller'"));
+	if(SM_Propeller.Succeeded())
+	{
+		Left->SetStaticMesh(SM_Propeller.Object);
+		Right->SetStaticMesh(SM_Propeller.Object);
+	}
+	Left->SetRelativeLocation(FVector(37.f, -21.f, 0.f));
+	Right->SetRelativeLocation(FVector(37.f, 21.f, 0.f));
+
+	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
+	Arrow->SetupAttachment(Box);
+	Arrow->SetRelativeLocation(FVector(200.f, 0.f, 0.f));
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(Box);
+	SpringArm->SocketOffset = FVector(0.f, 0.f, 33.33f);
+	SpringArm->TargetArmLength = 120.f;
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
+
+	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+	Movement->MaxSpeed = 1000.f;
 }
 
 // Called when the game starts or when spawned
