@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyPawn::AMyPawn()
@@ -66,11 +67,20 @@ void AMyPawn::BeginPlay()
 	
 }
 
+void AMyPawn::RotatePropeller(USceneComponent* Where, float RotationSpeed)
+{
+	Where->AddLocalRotation(FRotator(0.f, 0.f, RotationSpeed * UGameplayStatics::GetTimeSeconds(GetWorld())));
+}
+
 // Called every frame
 void AMyPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AddMovementInput(GetActorForwardVector(), 1.f);
+
+	RotatePropeller(Left, PropellerRotateSpeed);
+	RotatePropeller(Right, PropellerRotateSpeed);
 }
 
 // Called to bind functionality to input

@@ -26,6 +26,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void RotatePropeller(USceneComponent* Where, float RotationSpeed);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -56,4 +58,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
 	TObjectPtr<UFloatingPawnMovement> Movement;
+
+protected:
+
+	float PropellerRotateSpeed = 720.f;
 };
