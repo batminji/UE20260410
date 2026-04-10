@@ -12,6 +12,7 @@ class UArrowComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UFloatingPawnMovement;
+class UMyStaticMeshComponent;
 
 UCLASS()
 class UE20260410_API AMyPawn : public APawn
@@ -35,6 +36,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Pitch(float Value);
+
+	void Roll(float Value);
+
+	void Fire();
+
+	void Boost();
+
+	void UnBoost();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
 	TObjectPtr<UBoxComponent> Box;
 
@@ -42,10 +53,10 @@ public:
 	TObjectPtr<UStaticMeshComponent> Body;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
-	TObjectPtr<UStaticMeshComponent> Left;
+	TObjectPtr<UMyStaticMeshComponent> Left;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
-	TObjectPtr<UStaticMeshComponent> Right;
+	TObjectPtr<UMyStaticMeshComponent> Right;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
 	TObjectPtr<UArrowComponent> Arrow;
@@ -60,6 +71,12 @@ public:
 	TObjectPtr<UFloatingPawnMovement> Movement;
 
 protected:
-
-	float PropellerRotateSpeed = 720.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float BoostValue = 0.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float MoveSpeed = 1000.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float RotateSpeed = 60.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float PropellerRotateSpeed = 360.f;
 };
