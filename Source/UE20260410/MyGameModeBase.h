@@ -13,5 +13,8 @@ UCLASS()
 class UE20260410_API AMyGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	AMyGameModeBase();
 	
 };
