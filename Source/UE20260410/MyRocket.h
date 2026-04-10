@@ -6,6 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "MyRocket.generated.h"
 
+class UBoxComponent;
+class UStaticMeshComponent;
+class UProjectileMovementComponent;
+
 UCLASS()
 class UE20260410_API AMyRocket : public AActor
 {
@@ -22,5 +26,23 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
+	TObjectPtr<UBoxComponent> Box;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
+	TObjectPtr<UStaticMeshComponent> Rocket;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data)
+	float MoveSpeed = 2000.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data)
+	float LifeTime = 3.f;
+
 
 };
