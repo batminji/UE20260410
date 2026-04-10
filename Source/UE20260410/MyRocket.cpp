@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AMyRocket::AMyRocket()
@@ -15,7 +16,8 @@ AMyRocket::AMyRocket()
 
 	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	RootComponent = Box;
-	Box->SetBoxExtent(FVector(21.070178,10.003910, 9.999126));
+	Box->SetBoxExtent(FVector(20.f,10.f, 10.f));
+	Box->SetGenerateOverlapEvents(true);
 
 	Rocket = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rocket"));
 	Rocket->SetupAttachment(Box);
@@ -37,6 +39,8 @@ void AMyRocket::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	OnActorBeginOverlap.AddDynamic(this, &AMyRocket::ProcessActorBeginOverlap);
+
 	SetLifeSpan(LifeTime);
 }
 
@@ -47,10 +51,10 @@ void AMyRocket::Tick(float DeltaTime)
 
 }
 
-void AMyRocket::NotifyActorBeginOverlap(AActor* OtherActor)
+void AMyRocket::ProcessActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	UGameplayStatics::ApplyDamage(OtherActor, 10.f, GetInstigatorController(), this, UDamageType::StaticClass());
+	UE_LOG(LogTemp, Warning, TEXT("ProcessActorBeginOverlap"));
 
-	K2_DestroyActor();
+	Destroy();
 }
 

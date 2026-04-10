@@ -27,7 +27,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	UFUNCTION()
+	void ProcessActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
 	TObjectPtr<UBoxComponent> Box;
@@ -44,5 +45,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data)
 	float LifeTime = 3.f;
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data)
+	float Damage = 10.f;
 };
